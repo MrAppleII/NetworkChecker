@@ -74,16 +74,24 @@ class NetworkChecker extends Component {
   wentOffline = () => {
     if (this.state.isOnline) {
       this.setState({ isOnline: false })
-    }
-    this.props.callUponOffline()
+       this.props.callUponOffline()
     navigate(this.props.offlineUrl)
+    }
+   
   }
   wentOnline = () => {
+    if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+      console.log("Back Online")
+    }
     if (!this.state.isOnline) {
       this.setState({ isOnline: true })
+      this.props.callUponOnline()
+      if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
+        console.log("Navigating to online page.")
+      }
+      navigate(this.props.onlineUrl)
     }
-    this.props.callUponOffline()
-    navigate(this.props.onlineUrl)
+   
   }
   /*
      This is the fallback method if the browser does not support the JS API for online offline browser events. 
